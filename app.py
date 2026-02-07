@@ -17,7 +17,7 @@ creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
 client = gspread.authorize(creds)
 
 # 3. Open Sheets
-SHEET_ID = "YOUR_LONG_ID_HERE" # <--- PASTE YOUR ID HERE
+SHEET_ID = "1L_0iJOrN-nMxjX5zjNm2yUnUyck9RlUqeg2rnXvpAlU" # <--- PASTE YOUR ID HERE
 sh = client.open_by_key(SHEET_ID)
 expense_ws = sh.get_worksheet(0)
 settings_ws = sh.worksheet("Settings")
@@ -34,7 +34,7 @@ try:
 except:
     monthly_budget = 300000
 
-st.title("¥ Yen Tracker Pro")
+st.title("Bond Finances")
 
 # --- AI SCANNER SECTION ---
 with st.expander("📸 Scan Receipt with AI"):
@@ -145,6 +145,7 @@ with st.sidebar:
         settings_ws.update_acell('B1', new_budget)
         st.success("Salary updated!")
         st.rerun()
+
 
 
 
