@@ -2,6 +2,12 @@ import streamlit as st
 import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
+st.set_page_config(
+    page_title="Yen Tracker",
+    page_icon="¥",
+    layout="centered", # Better for narrow phone screens
+    initial_sidebar_state="collapsed"
+)
 
 # 1. Setup Connection
 scope = ["https://www.googleapis.com/auth/spreadsheets"]
@@ -39,6 +45,7 @@ st.subheader("Recent Expenses")
 data = worksheet.get_all_records()
 df = pd.DataFrame(data)
 st.dataframe(df)
+
 
 
 
