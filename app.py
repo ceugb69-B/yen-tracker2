@@ -14,7 +14,7 @@ SHEET_ID = "1L_0iJOrN-nMxjX5zjNm2yUnUyck9RlUqeg2rnXvpAlU"
 sh = client.open_by_key(SHEET_ID)
 worksheet = sh.get_worksheet(0)
 
-st.title("Bond Finance Tracker)
+st.title("Bond Finance Tracker")
 
 # --- ADD EXPENSE FORM ---
 with st.form("expense_form"):
@@ -39,6 +39,7 @@ st.subheader("Recent Expenses")
 data = worksheet.get_all_records()
 df = pd.DataFrame(data)
 st.dataframe(df)
+
 
 
 
