@@ -34,7 +34,7 @@ suggested_item = ""
 suggested_amount = 0
 suggested_cat = "Food 🍱"
 
-st.title("¥ Yen Tracker Pro")
+st.title("Bond Finances")
 
 # --- AI SCANNER ---
 with st.expander("📸 Scan Receipt with AI"):
@@ -77,6 +77,7 @@ with st.form("expense_form", clear_on_submit=True):
             expense_ws.append_row([str(st.date_input("Date")), item, category, amount])
             st.success("Saved!")
             st.rerun()
+
 
 
 
