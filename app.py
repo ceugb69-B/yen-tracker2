@@ -49,7 +49,7 @@ if submit:
     if item:
         worksheet.append_row([str(date), item, category, amount])
         st.success(f"Added ¥{amount} for {item}!")
-        else:
+    else:
             st.error("Please enter an item name.")
 
 # --- CALCULATIONS ---
@@ -88,6 +88,7 @@ st.subheader("Monthly Summary")
 monthly_summary = df.groupby('Month')['Amount'].sum().reset_index()
 monthly_summary['Month'] = monthly_summary['Month'].astype(str)
 st.bar_chart(monthly_summary.set_index('Month'))
+
 
 
 
