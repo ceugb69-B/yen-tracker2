@@ -4,7 +4,7 @@ import pandas as pd
 from google.oauth2.service_account import Credentials
 
 # 1. Page Config for iPhone
-st.set_page_config(page_title="Yen Tracker Pro", page_icon="¥", layout="centered")
+st.set_page_config(page_title="Bond's Finance Tracker", page_icon="¥", layout="centered")
 
 # 2. Setup Connection
 scope = ["https://www.googleapis.com/auth/spreadsheets"]
@@ -104,6 +104,7 @@ if data:
         )
 else:
     st.info("No data found. Start by adding an expense above!")
+
 
 
 
