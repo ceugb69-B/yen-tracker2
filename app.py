@@ -42,10 +42,10 @@ with st.expander("📸 Scan Receipt with AI"):
         # If AI works, it updates suggested_item to "Family Mart" etc.
 
 # 3. The Form now has something to look at (either "" or "Family Mart")
-with st.form("expense_form"):
+    with st.form("expense_form"):
     item = st.text_input("Item Name", value=suggested_item) # No more error!
 # --- SIDEBAR SETTINGS ---
-with st.sidebar:
+    with st.sidebar:
     st.header("Budget Settings")
     new_budget = st.number_input("Monthly Limit (¥)", value=monthly_budget, step=10000)
     if st.button("Save New Budget"):
@@ -137,6 +137,7 @@ with st.sidebar:
         settings_ws.update_acell('B1', new_budget)
         st.success("Budget updated in Sheet!")
         st.rerun()
+
 
 
 
