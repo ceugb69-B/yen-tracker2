@@ -98,6 +98,13 @@ if data:
         st.warning("Found the sheet, but the rows appear to be empty or formatted incorrectly.")
 else:
     st.info("Your Google Sheet is totally empty. Add your first expense to get started!")
+# Calculate percentage spent
+if monthly_budget > 0:
+    percent_spent = min(monthly_total / monthly_budget, 1.0)
+    st.progress(percent_spent)
+    
+    if percent_spent >= 0.9:
+        st.warning("⚠️ You've spent over 90% of your budget!")
 
 
 
