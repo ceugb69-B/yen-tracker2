@@ -5,7 +5,7 @@ from google.oauth2.service_account import Credentials
 
 # 1. Setup Connection
 scope = ["https://www.googleapis.com/auth/spreadsheets"]
-creds_dict = st.secrets["connections"].["gsheets"]
+creds_dict = st.secrets["connections"]["gsheets"]
 creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
 client = gspread.authorize(creds)
 
@@ -39,6 +39,7 @@ st.subheader("Recent Expenses")
 data = worksheet.get_all_records()
 df = pd.DataFrame(data)
 st.dataframe(df)
+
 
 
 
