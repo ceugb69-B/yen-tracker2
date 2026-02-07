@@ -27,7 +27,23 @@ try:
     monthly_budget = int(budget_val.replace(',', '')) if budget_val else 300000
 except:
     monthly_budget = 300000
+# ... setup code ...
 
+# 1. Start with blank values
+suggested_item = ""
+suggested_amount = 0
+suggested_cat = "Food 🍱"
+
+# 2. The AI expander might change those values
+with st.expander("📸 Scan Receipt with AI"):
+    uploaded_file = st.camera_input("Take a photo")
+    if uploaded_file:
+        # ... AI logic happens here ...
+        # If AI works, it updates suggested_item to "Family Mart" etc.
+
+# 3. The Form now has something to look at (either "" or "Family Mart")
+with st.form("expense_form"):
+    item = st.text_input("Item Name", value=suggested_item) # No more error!
 # --- SIDEBAR SETTINGS ---
 with st.sidebar:
     st.header("Budget Settings")
@@ -43,13 +59,33 @@ st.title("Bond Finances")
 with st.form("expense_form", clear_on_submit=True):
     st.subheader("Add New Expense")
     
-    # These fields are pre-filled if the AI worked!
+    # 1. Inputs (Pre-filled by AI if available, otherwise empty)
     item = st.text_input("Item Name", value=suggested_item)
     amount = st.number_input("Amount (¥)", min_value=0, value=int(suggested_amount), step=1)
     
     categories = ["Food 🍱", "Transport 🚆", "Shopping 🛍️", "Sightseeing 🏯",
                   "Mortgage 🏠", "Car 🚗", "Water 💧", "Electricity ⚡", 
                   "Car Insurance 🛡️", "Motorcycle Insurance 🏍️", "Pet stuff 🐾", "Gifts 🎁"]
+    
+    try:
+        default_index = categories.index(suggested_cat)
+    except:
+        default_index = 0
+        
+    category = st.selectbox("Category", categories, index=default_index)
+    date = st.date_input("Date")
+    
+    # 2. THE BUTTON (Ensure this is NOT indented inside an 'if' block)
+    submit = st.form_submit_button("Save to Google Sheets")
+    
+    # 3. Processing the click
+    if submit:
+        if item and amount > 0:
+            expense_ws.append_row([str(date), item, category, amount])
+            st.success(f"Saved: {item}")
+            st.rerun()
+        else:
+            st.error("Please provide both a name and an amount.")
     
     # Match the category from the AI
     try:
@@ -101,6 +137,7 @@ with st.sidebar:
         settings_ws.update_acell('B1', new_budget)
         st.success("Budget updated in Sheet!")
         st.rerun()
+
 
 
 
