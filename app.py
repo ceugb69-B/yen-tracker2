@@ -34,7 +34,7 @@ with st.sidebar:
         st.success("Budget Saved!")
         st.rerun()
 
-st.title("¥ "Bond Finances ¥")
+st.title("¥ Bond Finances ¥")
 
 # --- ADD EXPENSE FORM ---
 with st.form("expense_form", clear_on_submit=True):
@@ -104,6 +104,7 @@ if data:
         )
 else:
     st.info("No data found. Start by adding an expense above!")
+
 
 
 
