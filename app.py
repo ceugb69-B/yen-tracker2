@@ -8,6 +8,7 @@ st.set_page_config(
     layout="centered", # Better for narrow phone screens
     initial_sidebar_state="collapsed"
 )
+amount = st.number_input("Amount (¥)", min_value=0, step=1, format="%d")
 
 # 1. Setup Connection
 scope = ["https://www.googleapis.com/auth/spreadsheets"]
@@ -45,6 +46,7 @@ st.subheader("Recent Expenses")
 data = worksheet.get_all_records()
 df = pd.DataFrame(data)
 st.dataframe(df)
+
 
 
 
