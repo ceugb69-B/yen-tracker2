@@ -52,42 +52,42 @@ if submit:
     else:
             st.error("Please enter an item name.")
 
-# --- CALCULATIONS ---
-df['Date'] = pd.to_datetime(df['Date'])
-df['Month'] = df['Date'].dt.to_period('M')
+# --- DATA PROCESSING (The Replacement) ---
+data = worksheet.get_all_records()
 
-# Get current month and last month
-current_month = pd.Timestamp.now().to_period('M')
-last_month = (pd.Timestamp.now() - pd.offsets.MonthBegin(1)).to_period('M')
+if data:
+    df = pd.DataFrame(data)
+    
+    # Clean headers and convert types safely
+    df.columns = df.columns.str.strip()
+    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+    df['Amount'] = pd.to_numeric(df['Amount'], errors='coerce')
+    
+    # Remove "ghost" rows (blanks)
+    df = df.dropna(subset=['Date', 'Amount'])
 
-# Calculate totals
-monthly_total = df[df['Month'] == current_month]['Amount'].sum()
-last_month_total = df[df['Month'] == last_month]['Amount'].sum()
+    if not df.empty:
+        # Now we do the math
+        current_month = pd.Timestamp.now().to_period('M')
+        df['MonthYear'] = df['Date'].dt.to_period('M')
+        
+        monthly_total = df[df['MonthYear'] == current_month]['Amount'].sum()
+        remaining = monthly_budget - monthly_total
 
-# SET YOUR BUDGET HERE (e.g., 300,000 Yen)
-MONTHLY_BUDGET = 300000 
-remaining = MONTHLY_BUDGET - monthly_total
+        # --- DASHBOARD METRICS ---
+        st.divider()
+        m1, m2 = st.columns(2)
+        m1.metric("Spent (This Month)", f"¥{int(monthly_total):,}")
+        m2.metric("Budget Remaining", f"¥{int(remaining):,}")
 
-# --- DASHBOARD METRICS ---
-st.divider()
-col1, col2, col3 = st.columns(3)
+        # Show the table
+        st.subheader("Recent History")
+        st.dataframe(df[['Date', 'Item', 'Category', 'Amount']].iloc[::-1], use_container_width=True)
+    else:
+        st.warning("Found the sheet, but the rows appear to be empty or formatted incorrectly.")
+else:
+    st.info("Your Google Sheet is totally empty. Add your first expense to get started!")
 
-with col1:
-    st.metric("Spent This Month", f"¥{monthly_total:,}")
-
-with col2:
-    # This shows the "Month on Month" difference
-    delta = monthly_total - last_month_total
-    st.metric("vs. Last Month", f"¥{delta:,}", delta_color="inverse")
-
-with col3:
-    st.metric("Budget Remaining", f"¥{remaining:,}", delta=f"Budget: ¥{MONTHLY_BUDGET:,}")
-
-# --- MONTHLY BREAKDOWN TABLE ---
-st.subheader("Monthly Summary")
-monthly_summary = df.groupby('Month')['Amount'].sum().reset_index()
-monthly_summary['Month'] = monthly_summary['Month'].astype(str)
-st.bar_chart(monthly_summary.set_index('Month'))
 
 
 
