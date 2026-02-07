@@ -46,7 +46,7 @@ with st.expander("📸 Scan Receipt with AI"):
             item = st.text_input("Item Name", value=suggested_item) # No more error!
 # --- SIDEBAR SETTINGS ---
     with st.sidebar:
-    st.header("Budget Settings")
+        st.header("Budget Settings")
     new_budget = st.number_input("Monthly Limit (¥)", value=monthly_budget, step=10000)
     if st.button("Save New Budget"):
         settings_ws.update_acell('B1', new_budget)
@@ -137,6 +137,7 @@ with st.sidebar:
         settings_ws.update_acell('B1', new_budget)
         st.success("Budget updated in Sheet!")
         st.rerun()
+
 
 
 
