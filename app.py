@@ -45,10 +45,44 @@ with st.expander("📸 Scan Receipt with AI"):
 
 # We use the 'gemini-pro-vision' name as a fallback 
 # OR the strictly formatted string below:
-try:
-   model = genai.GenerativeModel('gemini-1.5-flash')
-except:
-    model = genai.GenerativeModel('gemini-pro-vision')
+with st.expander("📸 Scan Receipt with AI"):
+    uploaded_file = st.camera_input("Take a photo")
+    if uploaded_file:
+        # 1. Initialize variables to prevent "NameErrors" later
+        ai_success = False
+        
+        try:
+            genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+            
+            # Use a robust model name string
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            
+            img = Image.open(uploaded_file)
+            # Resize for faster upload
+            img.thumbnail((800, 800))
+            
+            with st.spinner("AI analyzing..."):
+                prompt = "Return ONLY JSON: {'item': str, 'amount': int, 'category': str}. Categories: Food 🍱, Transport 🚆, Shopping 🛍️, Sightseeing 🏯, Mortgage 🏠, Car 🚗, Water 💧, Electricity ⚡, Car Insurance 🛡️, Motorcycle Insurance 🏍️, Pet stuff 🐾, Gifts 🎁"
+                
+                response = model.generate_content([prompt, img])
+                
+                # Clean and parse JSON
+                raw_json = response.text.replace('```json', '').replace('```', '').strip()
+                ai_data = json.loads(raw_json)
+                
+                suggested_item = ai_data.get('item', "")
+                suggested_amount = ai_data.get('amount', 0)
+                suggested_cat = ai_data.get('category', "Food 🍱")
+                ai_success = True
+                
+        except Exception as e:
+            # This is the "except" block Python was looking for!
+            st.warning("AI Scanner is having trouble connecting. Using manual entry for now.")
+            # This helps you debug in the Streamlit logs
+            print(f"AI Error: {e}")
+
+        if ai_success:
+            st.success(f"AI Found: {suggested_item} (¥{suggested_amount})")
             
             # SURGERY: Open and resize the image to reduce data load
             img = Image.open(uploaded_file)
@@ -190,6 +224,7 @@ if st.button("Test AI Connection"):
         st.write(response.text)
     except Exception as e:
         st.error(f"Test Failed: {e}")
+
 
 
 
