@@ -43,7 +43,7 @@ with st.expander("📸 Scan Receipt with AI"):
         try:
             genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
             # Use the most stable configuration for Flash
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            model = genai.GenerativeModel(model_name="models/gemini-1.5-flash")
             
             # SURGERY: Open and resize the image to reduce data load
             img = Image.open(uploaded_file)
@@ -185,6 +185,7 @@ if st.button("Test AI Connection"):
         st.write(response.text)
     except Exception as e:
         st.error(f"Test Failed: {e}")
+
 
 
 
