@@ -45,7 +45,7 @@ with st.expander("📸 Scan Receipt with AI"):
 
 # We use the 'gemini-pro-vision' name as a fallback 
 # OR the strictly formatted string below:
-try:
+    try:
     model = genai.GenerativeModel('gemini-1.5-flash')
 except:
     model = genai.GenerativeModel('gemini-pro-vision')
@@ -190,6 +190,7 @@ if st.button("Test AI Connection"):
         st.write(response.text)
     except Exception as e:
         st.error(f"Test Failed: {e}")
+
 
 
 
