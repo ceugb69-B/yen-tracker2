@@ -169,14 +169,8 @@ with st.sidebar:
         settings_ws.update_acell('B1', new_budget)
         st.success("Salary updated!")
         st.rerun()
-if st.button("Test AI Connection"):
-    try:
-        genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        response = model.generate_content("Say 'System Online'")
-        st.write(response.text)
-    except Exception as e:
-        st.error(f"Test Failed: {e}")
+
+
 
 
 
