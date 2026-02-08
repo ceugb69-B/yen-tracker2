@@ -63,10 +63,6 @@ with st.expander("📸 Scan Receipt with AI"):
             st.warning("Scanner connection busy.")
             print(f"AI Error: {e}")
 
-# --- 2. THE FORM (Starts AFTER the AI block is totally finished) ---
-with st.form("expense_form", clear_on_submit=True):
-    # ... your form code here ...
-
 # --- SECTION 2: ADD EXPENSE FORM ---
 with st.form("expense_form", clear_on_submit=True):
     st.subheader("Add New Expense")
@@ -181,6 +177,7 @@ if st.button("Test AI Connection"):
         st.write(response.text)
     except Exception as e:
         st.error(f"Test Failed: {e}")
+
 
 
 
