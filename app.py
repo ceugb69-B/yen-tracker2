@@ -139,7 +139,7 @@ with st.form("expense_form", clear_on_submit=True):
 
 # --- SECTION 3: DASHBOARD & GRAPHS ---
 if not df.empty:
-    # Metrics
+    # 1. Calculation Logic
     current_month = pd.Timestamp.now().to_period('M')
     df['MonthYear'] = df['Date'].dt.to_period('M')
     curr_month_df = df[df['MonthYear'] == current_month]
@@ -148,28 +148,24 @@ if not df.empty:
     remaining = monthly_budget - monthly_total
     percent_spent = min(max(monthly_total / monthly_budget, 0.0), 1.0)
 
-    st.divider()
-    m1, m2 = st.columns(2)
-    m1.metric("Spent This Month", f"¥{int(monthly_total):,}")
-    m2.metric("Remaining Salary", f"¥{int(remaining):,}", delta=f"{(remaining/monthly_budget)*100:.1f}% budget used", delta_color="inverse")
-    st.progress(percent_spent)
-import calendar
-from datetime import datetime
+    # 2. Daily Allowance Logic (Clean Indentation)
+    import calendar
+    from datetime import datetime
+    
+    now = datetime.now()
+    last_day = calendar.monthrange(now.year, now.month)[1]
+    days_left = last_day - now.day + 1
 
-now = datetime.now()
-    # Get last day of current month (e.g., 28 for Feb 2026)
-last_day = calendar.monthrange(now.year, now.month)[1]
-days_left = last_day - now.day + 1
+    # 3. Display Metrics
+    st.divider()
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Spent This Month", f"¥{int(monthly_total):,}")
+    m2.metric("Remaining Salary", f"¥{int(remaining):,}")
     
-st.divider()
-m1, m2, m3 = st.columns(3) # Changed to 3 columns
-m1.metric("Spent This Month", f"¥{int(monthly_total):,}")
-m2.metric("Remaining Salary", f"¥{int(remaining):,}")
-    
-if remaining > 0:
+    if remaining > 0:
         daily_allowance = remaining / days_left
         m3.metric("Daily Allowance", f"¥{int(daily_allowance):,}")
-else:
+    else:
         m3.metric("Daily Allowance", "¥0", delta="Over Budget", delta_color="inverse")
     
     st.progress(percent_spent)
@@ -201,6 +197,7 @@ else:
         st.dataframe(history_view.head(15), hide_index=True, use_container_width=True)
 else:
     st.info("No data found. Ensure your Sheet has headers: Date, Item, Amount, Category, Description")
+
 
 
 
