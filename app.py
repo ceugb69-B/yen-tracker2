@@ -41,15 +41,19 @@ if not df.empty:
     df = df.dropna(subset=['Date'])
     df = df.sort_values('Date')
 
-# --- SIDEBAR (Filters & Maintenance) ---
 with st.sidebar:
     st.header("Settings & Filters")
     
-    # Salary Update
-    new_budget = st.number_input("Monthly Salary (¥)", value=int(monthly_budget), step=10000)
-    if st.button("Update Salary"):
-        settings_ws.update_acell('B1', new_budget)
-        st.success("Salary updated!")
+    # Track two different numbers
+    new_salary = st.number_input("Monthly Salary (¥)", value=820000, step=10000)
+    # We'll default the budget to 70% of salary or a manual number
+    spending_limit = st.number_input("Spending Limit (¥)", value=500000, step=10000)
+    
+    if st.button("Update Settings"):
+        # Save both to your Settings sheet (adjust cell references as needed)
+        settings_ws.update_acell('B1', new_salary)
+        settings_ws.update_acell('B2', spending_limit) 
+        st.success("Limits updated!")
         st.rerun()
 
     st.divider()
@@ -213,6 +217,7 @@ if not df.empty:
         mime="text/csv",
     )
     st.caption("Note: This CSV file can be opened directly in Excel or Google Sheets.")
+
 
 
 
