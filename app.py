@@ -184,7 +184,10 @@ if not df.empty:
         trend_df = df.groupby(df['Date'].dt.strftime('%Y-%m'))['Amount'].sum().reset_index()
         trend_df.columns = ['Month', 'Total Amount']
         fig_bar = px.bar(trend_df, x='Month', y='Total Amount', title="Monthly Spending History", color_discrete_sequence=['#ff4b4b'])
-        fig_bar.add_hline(y=monthly_budget, line_dash="dot", line_color="green", annotation_text="Budget Limit")
+        fig_bar.add_hline(y=spending_limit, 
+                 line_dash="dot", 
+                 line_color="orange", 
+                 annotation_text="Spending Goal")
         st.plotly_chart(fig_bar, use_container_width=True)
 
     with chart_col2:
@@ -217,6 +220,7 @@ if not df.empty:
         mime="text/csv",
     )
     st.caption("Note: This CSV file can be opened directly in Excel or Google Sheets.")
+
 
 
 
