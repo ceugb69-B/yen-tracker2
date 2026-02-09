@@ -154,7 +154,7 @@ if not df.empty:
     m2.metric("Remaining Salary", f"¥{int(remaining):,}", delta=f"{(remaining/monthly_budget)*100:.1f}% budget used", delta_color="inverse")
     st.progress(percent_spent)
 import calendar
-    from datetime import datetime
+from datetime import datetime
     
     now = datetime.now()
     # Get last day of current month (e.g., 28 for Feb 2026)
@@ -200,6 +200,7 @@ import calendar
         st.dataframe(history_view.head(15), hide_index=True, use_container_width=True)
 else:
     st.info("No data found. Ensure your Sheet has headers: Date, Item, Amount, Category, Description")
+
 
 
 
