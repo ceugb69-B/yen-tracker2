@@ -113,7 +113,14 @@ if raw_data:
             df = df.sort_values('Date')
             
             # ... [The rest of your chart logic remains the same] ...
-            
+# --- SIDEBAR ---
+with st.sidebar:
+    st.header("Settings")
+    new_budget = st.number_input("Monthly Salary (¥)", value=int(monthly_budget), step=10000)
+    if st.button("Update Salary"):
+        settings_ws.update_acell('B1', new_budget)
+        st.success("Salary updated!")
+        st.rerun()            
             # --- HISTORY TABLE ---
             with st.expander("View Recent History"):
                 # Dynamically select columns that actually exist to avoid KeyErrors
