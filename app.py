@@ -166,14 +166,15 @@ m1, m2, m3 = st.columns(3) # Changed to 3 columns
 m1.metric("Spent This Month", f"¥{int(monthly_total):,}")
 m2.metric("Remaining Salary", f"¥{int(remaining):,}")
     
-    if remaining > 0:
+if remaining > 0:
         daily_allowance = remaining / days_left
         m3.metric("Daily Allowance", f"¥{int(daily_allowance):,}")
-        st.write(f"💡 *You have **{days_left}** days left this month.*")
     else:
-        m3.metric("Daily Allowance", "¥0", delta="- Over Budget", delta_color="inverse")
+        m3.metric("Daily Allowance", "¥0", delta="Over Budget", delta_color="inverse")
     
     st.progress(percent_spent)
+    if remaining > 0:
+        st.write(f"💡 *You have **{days_left}** days left this month.*")
 
     # Charts
     st.write("### Spending Analysis")
@@ -200,6 +201,7 @@ m2.metric("Remaining Salary", f"¥{int(remaining):,}")
         st.dataframe(history_view.head(15), hide_index=True, use_container_width=True)
 else:
     st.info("No data found. Ensure your Sheet has headers: Date, Item, Amount, Category, Description")
+
 
 
 
