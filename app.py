@@ -102,7 +102,7 @@ if raw_data:
     # 2. Safety Check: Ensure 'Amount' exists before processing
     if 'Amount' in df.columns:
         # Force correct data types
-        df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+        df['Date'] = pd.to_datetime(df['Date'], errors='coerce', infer_datetime_format=True)
         df['Amount'] = pd.to_numeric(df['Amount'], errors='coerce')
         
         # Drop rows that are missing core data (like empty rows at the bottom)
@@ -125,6 +125,7 @@ if raw_data:
         st.error("Column 'Amount' not found. Please check your Google Sheet headers.")
 else:
     st.info("No data found. Add your first expense above!")
+
 
 
 
