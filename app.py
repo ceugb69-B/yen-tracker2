@@ -128,10 +128,11 @@ with st.sidebar:
                 history_view = df[cols_to_show].iloc[::-1].copy()
                 history_view['Date'] = history_view['Date'].dt.strftime('%Y-%m-%d')
                 st.dataframe(history_view.head(15), hide_index=True, use_container_width=True)
-    else:
+else:
         st.error("Column 'Amount' not found. Please check your Google Sheet headers.")
 else:
     st.info("No data found. Add your first expense above!")
+
 
 
 
